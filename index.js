@@ -48,6 +48,10 @@ function requireGuest(req, res, next) {
 
 function requireAuth(req, res, next) {
     if (!res.locals.username) {
+        res.cookie("flash", JSON.stringify({
+            message: "Please login first!",
+            type: "warning"
+        }));
         return res.redirect("/login");
     }
     next();
@@ -148,12 +152,14 @@ app.post("/register", requireGuest, (req, res) => {
         name: username,
         password: bcrypt.hashSync(password)
     });
-    
+
+    const token = jwt.sign({ username }, SECRET, { expiresIn: "1h" });
+    res.cookie("token", token, { httpOnly: true, secure: false });
     res.cookie("flash", JSON.stringify({
         type: "success",
         message: "Account created successfully!"
     }));
-    res.redirect("/login");
+    res.redirect("/");
 });
 
 app.get("/logout", requireAuth, (req, res) => {
