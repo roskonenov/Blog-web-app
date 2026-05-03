@@ -37,25 +37,39 @@ function attachUser(req, res, next) {
 
 function requireGuest(req, res, next) {
     if (res.locals.username) {
+        res.cookie("flash", "Already logged in!")
         return res.redirect(req.get("referer") || "/");
     }
     next();
 }
 
 function requireAuth(req, res, next) {
-    if (!res.cookies?.username) {
+    if (!res.locals.username) {
         return res.redirect("/login");
     }
     next();
 }
 
+function flashMiddleware(req, res, next) {
+    const message = req.cookies.flash;
+
+    if (message) {
+        res.locals.flash = message;
+        res.clearCookie("flash");
+    } else {
+        res.locals.flash = null;
+    }
+    next();
+}
+
 app.use(attachUser);
+app.use(flashMiddleware);
 
 app.get("/", (req, res) => {
     res.render("index.ejs", { blogData: blogData, truncateText: truncateText });
 });
 
-app.get("/login", requireGuest, (req, res) => {
+app.get("/login", requireGuest, requireGuest, (req, res) => {
     res.render("login.ejs");
 });
 
@@ -67,7 +81,8 @@ app.post("/login", requireGuest, async (req, res) => {
     const passwordIsValid = await bcrypt.compare(password, user.password);
 
     if (!user || !passwordIsValid) {
-        res.status(404).send("Username or Password incorect!");
+        res.cookie("flash", "Username or Password incorect!");
+       return res.redirect("/login");
     }
 
     const token = jwt.sign({ username: user.name }, SECRET, { expiresIn: "1h" });
@@ -78,6 +93,7 @@ app.post("/login", requireGuest, async (req, res) => {
 
 app.get("/logout", requireAuth, (req, res) => {
     res.clearCookie("token");
+    res.cookie("flash", "You have been logged out!");
     res.redirect("/");
 });
 
