@@ -11,7 +11,7 @@ const port = 3000;
 const SECRET = "mySecretKey";
 
 app.set("view engine", "ejs");
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(express.json());
 app.use(cookieParser());
@@ -37,7 +37,10 @@ function attachUser(req, res, next) {
 
 function requireGuest(req, res, next) {
     if (res.locals.username) {
-        res.cookie("flash", "Already logged in!")
+        res.cookie("flash", JSON.stringify({
+            message: "Already logged in!",
+            type: "warning"
+        }));
         return res.redirect(req.get("referer") || "/");
     }
     next();
@@ -54,7 +57,7 @@ function flashMiddleware(req, res, next) {
     const message = req.cookies.flash;
 
     if (message) {
-        res.locals.flash = message;
+        res.locals.flash = JSON.parse(message);
         res.clearCookie("flash");
     } else {
         res.locals.flash = null;
@@ -69,31 +72,49 @@ app.get("/", (req, res) => {
     res.render("index.ejs", { blogData: blogData, truncateText: truncateText });
 });
 
-app.get("/login", requireGuest, requireGuest, (req, res) => {
+app.get("/login", requireGuest, (req, res) => {
     res.render("login.ejs");
 });
 
 app.post("/login", requireGuest, async (req, res) => {
-    
+
     const { username, password } = req.body;
 
     const user = users.find(user => user.name === username);
+
+    if (!user) {
+        res.cookie("flash", JSON.stringify({
+            message: "Username or Password incorect!",
+            type: "danger"
+        }));
+        return res.redirect("/login");
+    }
     const passwordIsValid = await bcrypt.compare(password, user.password);
 
-    if (!user || !passwordIsValid) {
-        res.cookie("flash", "Username or Password incorect!");
-       return res.redirect("/login");
+    if (!passwordIsValid) {
+        res.cookie("flash", JSON.stringify({
+            message: "Username or Password incorect!",
+            type: "danger"
+        }));
+        return res.redirect("/login");
     }
 
     const token = jwt.sign({ username: user.name }, SECRET, { expiresIn: "1h" });
 
     res.cookie("token", token, { httpOnly: true, secure: false });
+    res.cookie("flash", JSON.stringify({
+        message: "You are now logged in!",
+        type: "success"
+    }));
     res.redirect("/");
 });
 
 app.get("/logout", requireAuth, (req, res) => {
     res.clearCookie("token");
-    res.cookie("flash", "You have been logged out!");
+    res.cookie("flash", JSON.stringify({
+        message: "You have been logged out!",
+        type: "success"
+    }));
     res.redirect("/");
 });
 

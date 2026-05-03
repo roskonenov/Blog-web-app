@@ -25,7 +25,7 @@
 
     <div class="container">
         <% blogData.forEach((blog, index)=> { %>
-            <% if (index % 2===0) { %>
+            <% if (index % 2 === 0) { %>
                 <div class="row mb-2 g-3">
             <% } %>
 
@@ -37,18 +37,18 @@
                                         <%= blog.subject %>
                                     </strong>
                                     <h3 class="mb-0">
-                                        <% const truncatedTitle=truncateText(blog.title, 25); %>
+                                        <% const truncatedTitle = truncateText(blog.title, 25); %>
                                             <%= truncatedTitle %>
                                     </h3>
                                     <div class="mb-1 text-body-secondary">
-                                        <% const formattedDate=new Date(blog.date).toLocaleDateString('en-US', {
+                                        <% const formattedDate = new Date(blog.date).toLocaleDateString('en-US', {
                                             month: 'short' , day: 'numeric' }); %>
                                             <%= formattedDate %>
                                     </div>
                                     <div class="mb-1 text-secondary-emphasis"> by <%= blog.user %>
                                     </div>
                                     <p class="card-text mb-auto">
-                                        <% const truncatedText=truncateText(blog.text, 95); %>
+                                        <% const truncatedText = truncateText(blog.text, 95); %>
                                             <%= truncatedText %>
                                     </p>
                                     <a href="#" class="icon-link gap-1 icon-link-hover stretched-link">
