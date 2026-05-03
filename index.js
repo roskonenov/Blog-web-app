@@ -4,17 +4,20 @@ import truncateText from "./utils/truncateText.js";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 import users from "./data/users.js";
+import bcrypt from "bcryptjs";
 
 const app = express();
 const port = 3000;
 const SECRET = "mySecretKey";
 
+app.set("view engine", "ejs");
+app.use(express.urlencoded({extended: true}));
 app.use(express.static("public"));
 app.use(express.json());
 app.use(cookieParser());
 
 function attachUser(req, res, next) {
-    const token = req.cookie.token;
+    const token = req.cookies?.token;
 
     if (!token) {
         res.locals.username = null;
@@ -32,15 +35,21 @@ function attachUser(req, res, next) {
     });
 }
 
-app.get("/", attachUser, (req, res) => {
+app.use(attachUser);
+
+app.get("/", (req, res) => {
     res.render("index.ejs", { blogData: blogData, truncateText: truncateText });
 });
 
-app.post("/login", (req, res) => {
+app.get("/login", (req, res) => {
+    res.render("login.ejs");
+});
+
+app.post("/login", async (req, res) => {
     const { username, password } = req.body;
 
     const user = users.find(user => user.name === username);
-    const passwordIsValid = user.password === password;
+    const passwordIsValid = await bcrypt.compare(password, user.password);
 
     if (!user || !passwordIsValid) {
         res.status(404).send("Username or Password incorect!");

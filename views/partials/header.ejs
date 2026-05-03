@@ -37,18 +37,27 @@
                         </svg>
                     </a>
                     <ul class="dropdown-menu text-small">
-                        <li><a class="dropdown-item" href="#">New project...</a></li>
+                        <li><a class="dropdown-item" href="#">New blog...</a></li>
                         <li><a class="dropdown-item" href="#">Settings</a></li>
                         <li><a class="dropdown-item" href="#">Profile</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                        <% if (username) { %>
+                            <li><a class="dropdown-item" href="/logout">Sign out</a></li>
+                            <% } else { %>
+                                <li><a class="dropdown-item" href="/login">Log in</a></li>
+                                <% } %>
+
                     </ul>
                 </div>
+                <p class="col-12 col-lg-auto mb-2 mx-3 justify-content-center mb-md-0 text-primary">Hello
+                    <% if (username) { %>
+                        <%= username %>
+                            <% } else { %>
+                                Guest
+                                <% } %>
+                </p>
             </div>
         </div>
     </header>
-</body>
-
-</html>
