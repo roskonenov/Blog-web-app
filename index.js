@@ -109,6 +109,53 @@ app.post("/login", requireGuest, async (req, res) => {
     res.redirect("/");
 });
 
+app.get("/register", requireGuest, (req, res) => {
+    res.render("register.ejs");
+});
+
+app.post("/register", requireGuest, (req, res) => {
+    const {username, password, repeatPassword} = req.body;
+    const errors = {};
+
+    if (!username || username.length < 3) {
+        errors.username = "At least 3 characters!"
+    }
+
+    if (!password || password.length < 6) {
+        errors.password = "At least 6 characters!"
+    }
+
+    if (password !== repeatPassword) {
+        errors.repeatPassword = "Passwords do not match!"
+    }
+
+    const userExist = users.find(user => user.name === username);
+    if (userExist) {
+        errors.username = "Username already taken!"
+    }
+
+    if (Object.keys(errors).length > 0) {
+        res.cookie("flash", JSON.stringify({
+            type: "danger",
+            errors,
+            oldInput: {username}
+        }));
+        return res.redirect("/register");
+    }
+
+    users.push({
+        id: users.length + 1,
+        name: username,
+        password: bcrypt.hashSync(password)
+    });
+    
+    res.cookie("flash", JSON.stringify({
+        type: "success",
+        message: "Account created successfully!"
+    }));
+    res.redirect("/login");
+});
+
 app.get("/logout", requireAuth, (req, res) => {
     res.clearCookie("token");
     res.cookie("flash", JSON.stringify({

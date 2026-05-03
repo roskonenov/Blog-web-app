@@ -18,10 +18,13 @@
                         <use xlink:href="#bootstrap"></use>
                     </svg> </a>
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="/" class="nav-link px-2 link-secondary">Home</a></li>
-                    <li><a href="#" class="nav-link px-2 link-body-emphasis">Inventory</a></li>
-                    <li><a href="#" class="nav-link px-2 link-body-emphasis">Customers</a></li>
-                    <li><a href="#" class="nav-link px-2 link-body-emphasis">Products</a></li>
+                    <li><a href="/" class="nav-link px-2 link-body-emphasis">Home</a></li>
+                    <li><a href="#" class="nav-link px-2 link-body-emphasis">My blogs</a></li>
+                    <% if (!username) { %>
+                        <li><a href="/register" class="nav-link px-2 link-body-emphasis">Register</a></li>
+                        <% } %>
+                            <!-- <li><a href="#" class="nav-link px-2 link-body-emphasis">Customers</a></li>
+                    <li><a href="#" class="nav-link px-2 link-body-emphasis">Products</a></li> -->
                 </ul>
                 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
                     <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
@@ -61,7 +64,7 @@
         </div>
     </header>
 
-    <% if (flash) { %>
+    <% if (flash && !flash.errors) { %>
         <div class="alert alert-<%= flash.type %> text-center m-0">
             <%= flash.message %>
         </div>
