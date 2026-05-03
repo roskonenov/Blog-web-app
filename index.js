@@ -110,7 +110,7 @@ app.post("/login", requireGuest, async (req, res) => {
         message: "You are now logged in!",
         type: "success"
     }));
-    res.redirect("/");
+    res.redirect(req.get("referer") || "/");
 });
 
 app.get("/register", requireGuest, (req, res) => {
