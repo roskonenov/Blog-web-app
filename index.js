@@ -35,17 +35,32 @@ function attachUser(req, res, next) {
     });
 }
 
+function requireGuest(req, res, next) {
+    if (res.locals.username) {
+        return res.redirect(req.get("referer") || "/");
+    }
+    next();
+}
+
+function requireAuth(req, res, next) {
+    if (!res.cookies?.username) {
+        return res.redirect("/login");
+    }
+    next();
+}
+
 app.use(attachUser);
 
 app.get("/", (req, res) => {
     res.render("index.ejs", { blogData: blogData, truncateText: truncateText });
 });
 
-app.get("/login", (req, res) => {
+app.get("/login", requireGuest, (req, res) => {
     res.render("login.ejs");
 });
 
-app.post("/login", async (req, res) => {
+app.post("/login", requireGuest, async (req, res) => {
+    
     const { username, password } = req.body;
 
     const user = users.find(user => user.name === username);
@@ -61,7 +76,7 @@ app.post("/login", async (req, res) => {
     res.redirect("/");
 });
 
-app.get("/logout", (req, res) => {
+app.get("/logout", requireAuth, (req, res) => {
     res.clearCookie("token");
     res.redirect("/");
 });
