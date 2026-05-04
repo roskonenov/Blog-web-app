@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 import users from "./data/users.js";
 import bcrypt from "bcryptjs";
+import highlightedText from "./utils/highlightedText.js";
 
 const app = express();
 const port = 3000;
@@ -182,7 +183,8 @@ app.get("/search", (req, res) => {
         blogData: result,
         truncateText,
         query,
-        
+        highlightedText
+
     });
 });
 

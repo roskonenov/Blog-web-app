@@ -11,12 +11,16 @@
                     <% const latestBlog = blogData[blogData.length - 1]; %>
                     <% const latestTruncateTitle = truncateText(latestBlog.title, 40); %>
 
-                    <h1 class="display-4 fw-bold lh-1 text-body-emphasis mb-4"><%= latestTruncateTitle %></h1>
+                    <h1 class="display-4 fw-bold lh-1 text-body-emphasis mb-4">
+                        <%- locals.query ? highlightedText(latestTruncateTitle, query) : latestTruncateTitle %>
+                    </h1>
                     <h2 class="mb-1 text-secondary-emphasis"> by <%= latestBlog.user %> </h2>
 
                     <% const latestTruncateText = truncateText(latestBlog.text, 300); %>
 
-                    <p class="lead my-5"> <%= latestTruncateText %> </p>
+                    <p class="lead my-5"> 
+                        <%- locals.query ? highlightedText(latestTruncateText, query) : latestTruncateText %> 
+                    </p>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
                         <button type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">
                             Read
@@ -38,7 +42,7 @@
     </div>
 
 <div class="container">
-    <%blogData.length > 0 && blogData.forEach((blog, index)=> { %>
+    <%blogData.forEach((blog, index)=> { %>
 
         <% if (index % 2 === 0) { %>
             <div class="row mb-2 g-3">
@@ -55,7 +59,7 @@
                             <h3 class="mb-0">
 
                                 <% const truncatedTitle = truncateText(blog.title, 25); %>
-                                <%= truncatedTitle %>
+                                <%- locals.query ? highlightedText(truncatedTitle, query) : truncatedTitle %>
 
                             </h3>
                             <div class="mb-1 text-body-secondary">
@@ -70,7 +74,7 @@
                             <p class="card-text mb-auto">
 
                                 <% const truncatedText = truncateText(blog.text, 95); %>
-                                <%= truncatedText %>
+                                <%- locals.query ? highlightedText(truncatedText, query) : truncatedText %>
 
                             </p>
                             <a href="#" class="icon-link gap-1 icon-link-hover stretched-link">
