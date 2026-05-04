@@ -26,6 +26,17 @@
                 }
             }, 4000);
         </script>
+        <script>
+            let timeout;
+            document.querySelector("input[name=q]").addEventListener("input", (e) => {
+                clearTimeout(timeout);
+
+                timeout = setTimeout(() => {
+                    const query = e.target.value;
+                    window.location.href = `/search?q=${encodeURIComponent(query)}`;
+                }, 500);
+            });
+        </script>
     </body>
 
 </html>

@@ -73,7 +73,7 @@ app.use(attachUser);
 app.use(flashMiddleware);
 
 app.get("/", (req, res) => {
-    res.render("index.ejs", { blogData: blogData, truncateText: truncateText });
+    res.render("index.ejs", { blogData, truncateText });
 });
 
 app.get("/login", requireGuest, (req, res) => {
@@ -169,6 +169,21 @@ app.get("/logout", requireAuth, (req, res) => {
         type: "success"
     }));
     res.redirect("/");
+});
+
+app.get("/search", (req, res) => {
+    const query = req.query.q?.toLowerCase() || "";
+
+    const result = blogData.filter(blog => 
+        blog.title.toLowerCase().includes(query) ||
+        blog.text.toLowerCase().includes(query)
+    );
+    res.render("index.ejs", {
+        blogData: result,
+        truncateText,
+        query,
+        
+    });
 });
 
 app.listen(port, () => {
