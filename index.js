@@ -42,13 +42,15 @@ function requireGuest(req, res, next) {
             message: "Already logged in!",
             type: "warning"
         }));
-        return res.redirect(req.get("referer") || "/");
+        return res.redirect("/");
     }
     next();
 }
 
 function requireAuth(req, res, next) {
     if (!res.locals.username) {
+        res.cookie("returnTo", req.originalUrl, {httpOnly: true});
+
         res.cookie("flash", JSON.stringify({
             message: "Please login first!",
             type: "warning"
@@ -111,7 +113,10 @@ app.post("/login", requireGuest, async (req, res) => {
         message: "You are now logged in!",
         type: "success"
     }));
-    res.redirect(req.get("referer") || "/");
+
+    const returnTo = req.cookies.returnTo;
+    res.clearCookie("returnTo");
+    res.redirect(!returnTo || !returnTo.startsWith("/") ? "/" : returnTo);
 });
 
 app.get("/register", requireGuest, (req, res) => {
@@ -179,13 +184,21 @@ app.get("/search", (req, res) => {
         blog.title.toLowerCase().includes(query) ||
         blog.text.toLowerCase().includes(query)
     );
+
     res.render("index.ejs", {
         blogData: result,
         truncateText,
         query,
         highlightedText
-
     });
+});
+
+app.get("/my-blogs", requireAuth, (req, res) => {
+
+    const username = res.locals.username;
+    const myPosts = blogData.filter(blog => blog.user === username);
+
+    res.render("personalBlogs.ejs", {blogData: myPosts});
 });
 
 app.listen(port, () => {

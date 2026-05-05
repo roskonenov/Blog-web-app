@@ -11,7 +11,7 @@
     </head>
 
     <body>
-        <header class="p-3 mb-3 border-bottom">
+        <header class="p-3 border-bottom">
             <div class="container">
                 <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"> 
                     <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none">
@@ -21,7 +21,7 @@
                     </a>
                     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                         <li><a href="/" class="nav-link px-2 link-body-emphasis">Home</a></li>
-                        <li><a href="#" class="nav-link px-2 link-body-emphasis">My blogs</a></li>
+                        <li><a href="/my-blogs" class="nav-link px-2 link-body-emphasis">My blogs</a></li>
                         <% if (!username) { %>
                             <li><a href="/register" class="nav-link px-2 link-body-emphasis">Register</a></li>
                         <% } %>
@@ -41,6 +41,7 @@
                             placeholder="Search..." 
                             aria-label="Search"
                             value="<%= locals.query || '' %>"
+                            autofocus
                         >
                     </form>
                     <div class="dropdown text-end">

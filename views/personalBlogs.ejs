@@ -1,0 +1,70 @@
+<%- include("partials/header.ejs") %>
+
+    <main class="d-flex flex-nowrap">
+        <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary" style="width: 380px;">
+            <a href="/"
+                class="d-flex align-items-center flex-shrink-0 p-3 link-body-emphasis text-decoration-none border-bottom">
+                <svg class="bi pe-none me-2" width="30" height="24" aria-hidden="true">
+                    <use xlink:href="#bootstrap"></use>
+                </svg>
+                <span class="fs-5 fw-semibold">List group</span>
+            </a>
+
+            <div class="list-group list-group-flush border-bottom scrollarea">
+                <a href="#" class="list-group-item list-group-item-action active py-3 lh-sm" aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1">List
+                            group
+                            item heading
+                        </strong>
+                        <small>Wed</small>
+                    </div>
+                    <div class="col-10 mb-1 small">
+                        Some placeholder content in a paragraph below the heading and date.
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-sm-8 blog px-5 mt-5">
+            <h2>Lorem ipsum dolor sit amet</h2>
+            <div class="d-flex justify-content-between">
+                <ul class="blog-detail list-unstyled list-inline">
+                    <li><i class="fa fa-calendar"></i>27/02/2014</li>
+                    <li><i class="fa fa-clock-o"></i>19:41</li>
+                    <li><i class="fa fa-user"></i>John Doe</li>
+                    <li><i class="fa fa-comments"></i>124 Comments</li>
+                </ul>
+                <img class="img-responsive pull-left" src="https://www.bootdey.com/image/200x200/FFB6C1/000000" alt="">
+            </div>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In venenatis lacus ac semper
+                viverra. Etiam consequat odio sollicitudin metus condimentum, quis hendrerit erat adipiscing. Cras non
+                turpis ut eros varius laoreet a ut felis. Aliquam sodales, purus pulvinar tincidunt congue, elit mauris
+                sodales nisl, consequat iaculis urna enim in lectus. Proin at ornare lacus. Curabitur sodales imperdiet
+                ante, eget fermentum nulla consequat id. Vestibulum quis tellus ac lectus luctus varius nec sit amet
+                nunc. Aliquam elit orci, semper vitae aliquet vel, ultrices nec sem. Morbi lorem ligula, tempus eu
+                ultrices sit amet, varius id quam. Donec vestibulum arcu et augue porta, at mattis neque facilisis.
+                Donec vulputate eu risus ut volutpat. Praesent vel rhoncus velit, quis vestibulum dui. Phasellus sodales
+                sapien ligula, quis consequat diam tristique id. Donec vel rhoncus sem, id elementum quam. Aliquam erat
+                volutpat.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In venenatis lacus ac semper viverra. Etiam
+                consequat odio sollicitudin metus condimentum, <a href="#">quis hendrerit</a> erat adipiscing. Cras non
+                turpis ut eros varius laoreet a ut felis. Aliquam sodales, purus pulvinar tincidunt congue, elit mauris
+                sodales nisl, consequat iaculis urna enim in lectus. Proin at ornare lacus. Curabitur sodales imperdiet
+                ante, eget fermentum nulla consequat id. Vestibulum quis tellus ac lectus luctus varius nec sit amet
+                nunc. Aliquam elit orci, semper vitae aliquet vel, ultrices nec sem.</p>
+            <ul>
+                <li>Lorem ipsum dolor sit amet</li>
+                <li>In venenatis lacus ac semper viverra</li>
+                <li>Etiam consequat odio sollicitudin metus condimentum</li>
+            </ul>
+            <p>Lorem ipsum dolor sit amet, <b>consectetur adipiscing elit. In venenatis lacus ac semper viverra</b>.
+                Etiam consequat odio sollicitudin metus condimentum, <i>quis hendrerit erat adipiscing</i>. Cras non
+                turpis ut eros varius laoreet a ut felis. Aliquam sodales, purus pulvinar tincidunt congue, elit mauris
+                sodales nisl, consequat iaculis urna enim in lectus. Proin at ornare lacus. Curabitur sodales imperdiet
+                ante, eget fermentum nulla consequat id. Vestibulum quis tellus ac lectus luctus varius nec sit amet
+                nunc. Aliquam elit orci, semper vitae aliquet vel, ultrices nec sem.</p>
+        </div>
+    </main>
+
+    <%- include("partials/footer.ejs") %>
