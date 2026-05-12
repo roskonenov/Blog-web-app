@@ -198,7 +198,10 @@ app.get("/my-blogs", requireAuth, (req, res) => {
     const username = res.locals.username;
     const myPosts = blogData.filter(blog => blog.user === username);
 
-    res.render("personalBlogs.ejs", {blogData: myPosts});
+    res.render("personalBlogs.ejs", {
+        blogData: blogData,
+        truncateText
+    });
 });
 
 app.listen(port, () => {
