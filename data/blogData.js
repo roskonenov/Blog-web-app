@@ -1,5 +1,6 @@
 const blogData = [
     {
+    id: 1,
     subject: "Mountain Adventure",
     title: "A Weekend in the Alps",
     date: "2026-03-12",
@@ -8,6 +9,7 @@ const blogData = [
     imageURL: "images/A Weekend in the Alps.avif"
   },
   {
+    id: 2,
     subject: "City Escape",
     title: "48 Hours in Paris",
     date: "2026-02-20",
@@ -16,6 +18,7 @@ const blogData = [
     imageURL: "images/48 Hours in Paris.webp"
   },
   {
+    id: 3,
     subject: "Beach Holiday",
     title: "Sunsets in Bali",
     date: "2026-01-15",
@@ -24,6 +27,7 @@ const blogData = [
     imageURL: "images/Sunsets in Bali.webp"
   },
     {
+    id: 4,
     subject: "Road Trip",
     title: "Driving Through the American Southwest",
     date: "2026-04-05",
@@ -32,6 +36,7 @@ const blogData = [
     imageURL: "images/Driving Through the American Southwest.webp"
   },
   {
+    id: 5,
     subject: "Island Escape",
     title: "Hidden Gems of the Greek Islands",
     date: "2026-03-18",
@@ -40,6 +45,7 @@ const blogData = [
     imageURL: "images/Hidden Gems of the Greek Islands.jpg"
   },
   {
+    id: 6,
     subject: "Urban Exploration",
     title: "Night Walks in Tokyo",
     date: "2026-02-28",

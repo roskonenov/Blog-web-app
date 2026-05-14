@@ -49,7 +49,7 @@ function requireGuest(req, res, next) {
 
 function requireAuth(req, res, next) {
     if (!res.locals.username) {
-        res.cookie("returnTo", req.originalUrl, {httpOnly: true});
+        res.cookie("returnTo", req.originalUrl, { httpOnly: true });
 
         res.cookie("flash", JSON.stringify({
             message: "Please login first!",
@@ -124,7 +124,7 @@ app.get("/register", requireGuest, (req, res) => {
 });
 
 app.post("/register", requireGuest, (req, res) => {
-    const {username, password, repeatPassword} = req.body;
+    const { username, password, repeatPassword } = req.body;
     const errors = {};
 
     if (!username || username.length < 3) {
@@ -148,7 +148,7 @@ app.post("/register", requireGuest, (req, res) => {
         res.cookie("flash", JSON.stringify({
             type: "danger",
             errors,
-            oldInput: {username}
+            oldInput: { username }
         }));
         return res.redirect("/register");
     }
@@ -180,7 +180,7 @@ app.get("/logout", requireAuth, (req, res) => {
 app.get("/search", (req, res) => {
     const query = req.query.q?.toLowerCase() || "";
 
-    const result = blogData.filter(blog => 
+    const result = blogData.filter(blog =>
         blog.title.toLowerCase().includes(query) ||
         blog.text.toLowerCase().includes(query)
     );
@@ -193,14 +193,24 @@ app.get("/search", (req, res) => {
     });
 });
 
-app.get("/my-blogs", requireAuth, (req, res) => {
+app.get("/my-blogs/:id", requireAuth, (req, res) => {
 
     const username = res.locals.username;
     const myPosts = blogData.filter(blog => blog.user === username);
 
+    if (!myPosts || myPosts.length === 0) {
+        res.cookie("flash", JSON.stringify({
+            message: "You don't have any posts yet. Write your first one now!",
+            type: "warning"
+        }));
+        return res.redirect("/");
+    }
+    const selectedBlog = myPosts.find(blog => blog.id === Number(req.params.id));
+
     res.render("personalBlogs.ejs", {
         blogData: blogData,
-        truncateText
+        truncateText,
+        selectedBlog
     });
 });
 
