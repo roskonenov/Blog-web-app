@@ -34,7 +34,7 @@
 
         <div class="col-sm-8 blog px-5 mt-5 mx-auto">
             <h2> <%= selectedBlog.title %> </h2>
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between align-items-center">
                 <ul class="blog-detail list-unstyled list-inline">
                     <li><i class="fa-solid fa-calendar me-1"></i>
                     <%= new Date(selectedBlog.date).toLocaleDateString("en-US", {
@@ -45,8 +45,24 @@
                     </li>
                     <li><i class="fa-solid fa-user me-1"></i> <%= selectedBlog.user %> </li>
                 </ul>
-                <img class="img-responsive pull-left" src="<%= selectedBlog.imageURL.startsWith('http') ? selectedBlog.imageURL : '/' + selectedBlog.imageURL %>" alt="" height="300">
+
+                <% if (selectedBlog.user === username) { %>
+                    <div>
+                        <a href="/edit-post/<%= selectedBlog.id %>" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">
+                            Edit Post
+                        </a>
+                        <a href="/delete-post/<%= selectedBlog.id %>" class="btn btn-danger btn-lg px-4 me-md-2 fw-bold">
+                            Delete Post
+                        </a>
+                    </div>    
+                <% } %>
+                
             </div>
+            <img 
+                class="img-responsive pull-left blog-image" 
+                src="<%= selectedBlog.imageURL.startsWith('http') ? selectedBlog.imageURL : '/' + selectedBlog.imageURL %>" 
+                alt="" 
+                height="300">
             <p
             style="white-space: pre-wrap"
             > <%= selectedBlog.text %> </p>

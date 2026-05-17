@@ -195,7 +195,7 @@ app.get("/search", (req, res) => {
 });
 
 app.get("/blog/:id", (req, res) => {
-    res.render("personalBlogs.ejs", {
+    res.render("postView.ejs", {
         blogData: blogData.filter(blog => blog.user === res?.local?.username),
         truncateText,
         selectedBlog: blogData.find(post => post.id === Number(req.params.id))
@@ -219,7 +219,7 @@ app.get("/my-blogs/:id", requireAuth, (req, res) => {
         selectedBlog = myPosts[0];
     }
 
-    res.render("personalBlogs.ejs", {
+    res.render("postView.ejs", {
         blogData: myPosts,
         truncateText,
         selectedBlog
