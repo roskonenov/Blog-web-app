@@ -1,0 +1,86 @@
+<%- include("partials/header.ejs") %>
+
+    <div class="container py-5">
+
+        <h1 class="mb-4">
+            <%= blog ? "Update post" : "Create new post" %>
+        </h1>
+
+        <form action="<%= blog ? `/update-post/${blog.id}` : '/add-post' %>" method="POST" class="row g-3">
+
+            <div class="col-md-6">
+                <div class="col-md-10">
+                    <label class="form-label">Subject</label>
+
+                    <input 
+                    type="text" 
+                    name="subject"
+                    class="form-control <%= flash?.errors?.subject ? 'is-invalid' : '' %>"
+                    value="<%= flash?.oldInput?.subject || '' %>" 
+                    required>
+
+                    <div class="invalid-feedback">
+                        <%= flash?.errors?.subject %>
+                    </div>
+                </div>
+
+
+                <div class="col-md-10">
+                    <label class="form-label">Title</label>
+
+                    <input 
+                    type="text" 
+                    name="title" 
+                    class="form-control <%= flash?.errors?.title ? 'is-invalid' : '' %>"
+                    value="<%= flash?.oldInput?.title || '' %>" 
+                    required>
+
+                    <div class="invalid-feedback">
+                        <%= flash?.errors?.title %>
+                    </div>
+                </div>
+
+                <div class="col-md-10">
+                    <label class="form-label">Image URL</label>
+
+                    <input 
+                    type="text" 
+                    name="imageURL" 
+                    class="form-control <%= flash?.errors?.imageURL ? 'is-invalid' : '' %>"
+                    value="<%= flash?.oldInput?.imageURL || '' %>" 
+                    required>
+
+                    <div class="invalid-feedback">
+                        <%= flash?.errors?.imageURL %>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6"></div>
+
+            <div class="col-12">
+                <label class="form-label">Blog Content</label>
+
+                <textarea 
+                name="text" 
+                rows="15" 
+                style="white-space: pre-wrap"
+                class="form-control <%= flash?.errors?.text ? 'is-invalid' : '' %>"
+                required><%= flash?.oldInput?.text || '' %></textarea>
+
+                <div class="invalid-feedback">
+                    <%= flash?.errors?.text %>
+                </div> 
+            </div>
+
+            <div class="col-12">
+                <button class="btn btn-primary">
+                    <%= blog ? "Update Post" : "Create Post" %>
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+    <%- include("partials/footer.ejs") %>

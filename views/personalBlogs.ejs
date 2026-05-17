@@ -1,32 +1,36 @@
 <%- include("partials/header.ejs") %>
 
     <main class="d-flex flex-nowrap">
-        <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary" style="width: 380px;">
-            <span class="fs-5 fw-semibold p-3 link-body-emphasis border-bottom">My Blogs</span>
+        <% if (blogData.includes(selectedBlog)) { %>
+            
+            <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary" style="width: 380px;">
+                <span class="fs-5 fw-semibold p-3 link-body-emphasis border-bottom">My Blogs</span>
 
-            <div class="list-group list-group-flush border-bottom scrollarea">
-                <% blogData.forEach(blog => { %>
+                <div class="list-group list-group-flush border-bottom scrollarea">
+                    <% blogData.forEach(blog => { %>
 
-                    <a href="/my-blogs/<%= blog.id %>" class="list-group-item list-group-item-action <%= selectedBlog?.id === blog.id ? 'active' : '' %> py-3 lh-sm" aria-current="true">
-                        <div class="d-flex w-100 align-items-center justify-content-between">
-                            <strong class="mb-1"> <%= truncateText(blog.title, 25) %> </strong>
-                            <small> 
-                                <%= new Date(blog.date).toLocaleDateString("en-US", {
-                                                            day: "numeric",
-                                                            month: "long",
-                                                            year: "numeric"
-                                                        }) %> 
-                            </small>
-                        </div>
-                        <div class="col-10 mb-1 small">
-                            <%= truncateText(blog.text, 120) %>
-                        </div>
-                    </a>
+                        <a href="/my-blogs/<%= blog.id %>" class="list-group-item list-group-item-action <%= selectedBlog?.id === blog.id ? 'active' : '' %> py-3 lh-sm" aria-current="true">
+                            <div class="d-flex w-100 align-items-center justify-content-between">
+                                <strong class="mb-1"> <%= truncateText(blog.title, 25) %> </strong>
+                                <small> 
+                                    <%= new Date(blog.date).toLocaleDateString("en-US", {
+                                                                day: "numeric",
+                                                                month: "long",
+                                                                year: "numeric"
+                                                            }) %> 
+                                </small>
+                            </div>
+                            <div class="col-10 mb-1 small">
+                                <%= truncateText(blog.text, 120) %>
+                            </div>
+                        </a>
 
-              <% }); %>
-                
+                <% }); %>
+                    
+                </div>
             </div>
-        </div>
+
+        <% } %>
 
         <div class="col-sm-8 blog px-5 mt-5">
             <h2> <%= selectedBlog.title %> </h2>
@@ -41,7 +45,7 @@
                     </li>
                     <li><i class="fa-solid fa-user me-1"></i> <%= selectedBlog.user %> </li>
                 </ul>
-                <img class="img-responsive pull-left" src="/<%= selectedBlog.imageURL %>" alt="" height="300">
+                <img class="img-responsive pull-left" src="<%= selectedBlog.imageURL.startsWith('http') ? selectedBlog.imageURL : '/' + selectedBlog.imageURL %>" alt="" height="300">
             </div>
             <p
             style="white-space: pre-wrap"

@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import users from "./data/users.js";
 import bcrypt from "bcryptjs";
 import highlightedText from "./utils/highlightedText.js";
+import isValidImageURL from "./utils/isValidImageURL.js";
 
 const app = express();
 const port = 3000;
@@ -203,15 +204,64 @@ app.get("/my-blogs/:id", requireAuth, (req, res) => {
             message: "You don't have any posts yet. Write your first one now!",
             type: "warning"
         }));
-        return res.redirect("/");
+        return res.redirect("/add-post");
     }
-    const selectedBlog = myPosts.find(blog => blog.id === Number(req.params.id));
+    let selectedBlog = myPosts.find(blog => blog.id === Number(req.params.id));
+    if (!selectedBlog) {
+        selectedBlog = myPosts[0];
+    }
 
     res.render("personalBlogs.ejs", {
-        blogData: blogData,
+        blogData: myPosts,
         truncateText,
         selectedBlog
     });
+});
+
+app.get("/add-post", requireAuth, (req, res) => {
+    res.render("addUpdateBlog.ejs", {blog: null});
+});
+
+app.post("/add-post", requireAuth, (req, res) => {
+    const { subject, title, imageURL, text } = req.body;
+    const errors = {};
+
+    if (!subject || subject.length < 3) {
+        errors.subject = "'Subject' must be at least 3 characters!";
+    }
+
+    if (!title || title.length < 6) {
+        errors.title = "'Title' must be at least 6 characters!";
+    }
+
+    if (!imageURL || !isValidImageURL(imageURL)) {
+        errors.imageURL = "Please enter valid image URL!"
+    }
+
+    if (!text || text.length < 200) {
+        errors.text = "Your post must be at least 200 characters!"
+    }
+
+    if (Object.keys(errors).length > 0) {
+        res.cookie("flash", JSON.stringify({
+            type: "danger",
+            errors,
+            oldInput: {subject, title, imageURL, text}
+        }));
+        return res.redirect("/add-post");
+    }
+
+    blogData.push({
+        id: blogData.length + 1,
+        subject,
+        title,
+        date: new Date(),
+        text,
+        user: res.locals.username,
+        imageURL
+    });
+
+    res.redirect(`/my-blogs/${blogData.length}`)
 });
 
 app.listen(port, () => {

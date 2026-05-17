@@ -22,14 +22,17 @@
                         <%- locals.query ? highlightedText(latestTruncateText, query) : latestTruncateText %> 
                     </p>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                        <button type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">
+                        <a href="/blog/<%= latestBlog.id %>" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">
                             Read
-                        </button>
+                        </a>
                     </div>
                 </div>
 
                 <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
-                    <img class="rounded-lg-3 img-fluid float-end" src="/<%= latestBlog.imageURL %>" alt="" height="300">
+                    <img 
+                    class="rounded-lg-3 img-fluid float-end" 
+                    src="<%= latestBlog.imageURL.startsWith('http') ? latestBlog.imageURL : '/' + latestBlog.imageURL %>" 
+                    alt="" height="300">
                 </div>
             </div> 
 
@@ -85,7 +88,11 @@
                             </a>
                         </div>
                         <div class="col-auto d-none d-lg-block">
-                            <img src="/<%= blog.imageURL %>" height="250" width="200" alt="">
+                            <img 
+                            src="<%= blog.imageURL.startsWith('http') ? blog.imageURL : '/' + blog.imageURL %>" 
+                            height="250" 
+                            width="200" 
+                            alt="">
                         </div>
                     </div>
                 </div>
