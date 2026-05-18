@@ -273,6 +273,43 @@ app.get("/edit-post/:id", requireAuth, (req, res) => {
     res.render("addUpdateBlog.ejs", { blog });
 });
 
+app.post("/edit-post/:id", requireAuth, (req, res) => {
+    const blog = blogData.find(post => post.id === Number(req.params.id));
+    const authError = authorizeEditPost(blog, res.locals.username);
+
+    if (authError) {
+        res.cookie("flash", JSON.stringify(authError.flash));
+        return res.redirect(authError.redirectTo);
+    }
+
+    
+    const { errors, oldInput } = validatePostInput(req.body);
+
+    if (Object.keys(errors).length > 0) {
+
+        res.cookie("flash", JSON.stringify({
+            type: "danger",
+            errors,
+            oldInput
+        }));
+
+        return res.redirect(`/edit-post/${blog.id}`);
+    }
+
+    const { subject, title, imageURL, text } = oldInput;
+    blog.subject = subject;
+    blog.title = title;
+    blog.imageURL = imageURL;
+    blog.text = text;
+
+    res.cookie("flash", JSON.stringify({
+            type: "success",
+            message: "Post updated successfully!"
+        }));
+    
+    res.redirect(`/my-blogs/${blog.id}`);
+});
+
 app.listen(port, () => {
     console.log(`Server started on port ${port}.`);
 });
