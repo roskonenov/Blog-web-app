@@ -6,7 +6,7 @@
             <%= blog ? "Update post" : "Create new post" %>
         </h1>
 
-        <form action="<%= blog ? `/update-post/${blog.id}` : '/add-post' %>" method="POST" class="row g-3">
+        <form action="<%= blog ? `/edit-post/${blog.id}` : '/add-post' %>" method="POST" class="row g-3">
 
             <div class="col-md-6">
                 <div class="col-md-10">

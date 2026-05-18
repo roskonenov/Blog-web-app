@@ -7,6 +7,7 @@ import users from "./data/users.js";
 import bcrypt from "bcryptjs";
 import highlightedText from "./utils/highlightedText.js";
 import validatePostInput from "./utils/validatePostInput.js";
+import authorizeEditPost from "./utils/authorizeEditPost.js";
 
 const app = express();
 const port = 3000;
@@ -262,24 +263,14 @@ app.post("/add-post", requireAuth, (req, res) => {
 
 app.get("/edit-post/:id", requireAuth, (req, res) => {
     const blog = blogData.find(post => post.id === Number(req.params.id));
+    const authError = authorizeEditPost(blog, res.locals.username);
 
-    if (!blog) {
-        res.cookie("flash", JSON.stringify({
-            type: "danger",
-            message: "The blog post you are trying to edit was not found. Please choose an existing post or create a new one."
-        }));
-        return res.redirect("/add-post");
+    if (authError) {
+        res.cookie("flash", JSON.stringify(authError.flash));
+        return res.redirect(authError.redirectTo);
     }
 
-    if (blog.user !== res.locals.username) {
-        res.cookie("flash", JSON.stringify({
-            type: "danger",
-            message: "You are not allowed to edit this post!"
-        }));
-        return res.redirect(`/my-blogs/${blog.id}`);
-    }
-
-    res.render("addUpdateBlog.ejs", { blog })
+    res.render("addUpdateBlog.ejs", { blog });
 });
 
 app.listen(port, () => {
