@@ -22,12 +22,11 @@
                 </a>
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="/" class="nav-link px-2 link-body-emphasis">Home</a></li>
+                    <li><a href="/add-post" class="nav-link px-2 link-body-emphasis">New blog</a></li>
                     <li><a href="/my-blogs/1" class="nav-link px-2 link-body-emphasis">My blogs</a></li>
                     <% if (!username) { %>
                         <li><a href="/register" class="nav-link px-2 link-body-emphasis">Register</a></li>
-                        <% } %>
-                            <!-- <li><a href="#" class="nav-link px-2 link-body-emphasis">Customers</a></li>
-                        <li><a href="#" class="nav-link px-2 link-body-emphasis">Products</a></li> -->
+                    <% } %>
                 </ul>
                 <form action="/search" method="GET" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
                     <input type="search" class="form-control" name="q" placeholder="Search..." aria-label="Search"
@@ -44,7 +43,7 @@
                         </svg>
                     </a>
                     <ul class="dropdown-menu text-small">
-                        <li><a class="dropdown-item" href="/add-post">New blog...</a></li>
+                        
                         <li><a class="dropdown-item" href="#">Profile</a></li>
                         <li>
                             <hr class="dropdown-divider">

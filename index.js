@@ -6,7 +6,7 @@ import cookieParser from "cookie-parser";
 import users from "./data/users.js";
 import bcrypt from "bcryptjs";
 import highlightedText from "./utils/highlightedText.js";
-import isValidImageURL from "./utils/isValidImageURL.js";
+import validatePostInput from "./utils/validatePostInput.js";
 
 const app = express();
 const port = 3000;
@@ -195,8 +195,9 @@ app.get("/search", (req, res) => {
 });
 
 app.get("/blog/:id", (req, res) => {
+
     res.render("postView.ejs", {
-        blogData: blogData.filter(blog => blog.user === res?.local?.username),
+        blogData: blogData.filter(blog => blog.user === res.locals.username),
         truncateText,
         selectedBlog: blogData.find(post => post.id === Number(req.params.id))
     });
@@ -227,37 +228,24 @@ app.get("/my-blogs/:id", requireAuth, (req, res) => {
 });
 
 app.get("/add-post", requireAuth, (req, res) => {
-    res.render("addUpdateBlog.ejs", {blog: null});
+    res.render("addUpdateBlog.ejs", { blog: null });
 });
 
 app.post("/add-post", requireAuth, (req, res) => {
-    const { subject, title, imageURL, text } = req.body;
-    const errors = {};
 
-    if (!subject || subject.length < 3) {
-        errors.subject = "'Subject' must be at least 3 characters!";
-    }
-
-    if (!title || title.length < 6) {
-        errors.title = "'Title' must be at least 6 characters!";
-    }
-
-    if (!imageURL || !isValidImageURL(imageURL)) {
-        errors.imageURL = "Please enter valid image URL!"
-    }
-
-    if (!text || text.length < 200) {
-        errors.text = "Your post must be at least 200 characters!"
-    }
+    const { errors, oldInput } = validatePostInput(req.body);
 
     if (Object.keys(errors).length > 0) {
+
         res.cookie("flash", JSON.stringify({
             type: "danger",
             errors,
-            oldInput: {subject, title, imageURL, text}
+            oldInput
         }));
         return res.redirect("/add-post");
     }
+
+    const { subject, title, imageURL, text } = oldInput;
 
     blogData.push({
         id: blogData.length + 1,
@@ -270,6 +258,28 @@ app.post("/add-post", requireAuth, (req, res) => {
     });
 
     res.redirect(`/my-blogs/${blogData.length}`)
+});
+
+app.get("/edit-post/:id", requireAuth, (req, res) => {
+    const blog = blogData.find(post => post.id === Number(req.params.id));
+
+    if (!blog) {
+        res.cookie("flash", JSON.stringify({
+            type: "danger",
+            message: "The blog post you are trying to edit was not found. Please choose an existing post or create a new one."
+        }));
+        return res.redirect("/add-post");
+    }
+
+    if (blog.user !== res.locals.username) {
+        res.cookie("flash", JSON.stringify({
+            type: "danger",
+            message: "You are not allowed to edit this post!"
+        }));
+        return res.redirect(`/my-blogs/${blog.id}`);
+    }
+
+    res.render("addUpdateBlog.ejs", { blog })
 });
 
 app.listen(port, () => {

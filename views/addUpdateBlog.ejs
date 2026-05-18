@@ -16,7 +16,7 @@
                     type="text" 
                     name="subject"
                     class="form-control <%= flash?.errors?.subject ? 'is-invalid' : '' %>"
-                    value="<%= flash?.oldInput?.subject || '' %>" 
+                    value="<%= flash?.oldInput?.subject || blog?.subject || '' %>" 
                     required>
 
                     <div class="invalid-feedback">
@@ -32,7 +32,7 @@
                     type="text" 
                     name="title" 
                     class="form-control <%= flash?.errors?.title ? 'is-invalid' : '' %>"
-                    value="<%= flash?.oldInput?.title || '' %>" 
+                    value="<%= flash?.oldInput?.title || blog?.title || '' %>" 
                     required>
 
                     <div class="invalid-feedback">
@@ -47,7 +47,7 @@
                     type="text" 
                     name="imageURL" 
                     class="form-control <%= flash?.errors?.imageURL ? 'is-invalid' : '' %>"
-                    value="<%= flash?.oldInput?.imageURL || '' %>" 
+                    value="<%= flash?.oldInput?.imageURL || blog?.imageURL || '' %>" 
                     required>
 
                     <div class="invalid-feedback">
@@ -66,7 +66,7 @@
                 rows="15" 
                 style="white-space: pre-wrap"
                 class="form-control <%= flash?.errors?.text ? 'is-invalid' : '' %>"
-                required><%= flash?.oldInput?.text || '' %></textarea>
+                required><%= flash?.oldInput?.text || blog?.text || '' %></textarea>
 
                 <div class="invalid-feedback">
                     <%= flash?.errors?.text %>
