@@ -6,7 +6,7 @@
             <%= blog ? "Update post" : "Create new post" %>
         </h1>
 
-        <form action="<%= blog ? `/edit-post/${blog.id}` : '/add-post' %>" method="POST" class="row g-3">
+        <form action="<%= blog ? `/edit-post/${blog.id}` : '/add-post' %>" method="POST" class="row g-3" id="draftForm">
 
             <div class="col-md-6">
                 <div class="col-md-10">
@@ -15,6 +15,7 @@
                     <input 
                     type="text" 
                     name="subject"
+                    id="subject"
                     class="form-control <%= flash?.errors?.subject ? 'is-invalid' : '' %>"
                     value="<%= flash?.oldInput?.subject || blog?.subject || '' %>" 
                     required>
@@ -31,6 +32,7 @@
                     <input 
                     type="text" 
                     name="title" 
+                    id="title"
                     class="form-control <%= flash?.errors?.title ? 'is-invalid' : '' %>"
                     value="<%= flash?.oldInput?.title || blog?.title || '' %>" 
                     required>
@@ -46,6 +48,7 @@
                     <input 
                     type="text" 
                     name="imageURL" 
+                    id="imageURL"
                     class="form-control <%= flash?.errors?.imageURL ? 'is-invalid' : '' %>"
                     value="<%= flash?.oldInput?.imageURL || blog?.imageURL || '' %>" 
                     required>
@@ -63,6 +66,7 @@
 
                 <textarea 
                 name="text" 
+                id="text"
                 rows="15" 
                 style="white-space: pre-wrap"
                 class="form-control <%= flash?.errors?.text ? 'is-invalid' : '' %>"
@@ -74,7 +78,7 @@
             </div>
 
             <div class="col-12">
-                <button class="btn btn-primary">
+                <button class="btn btn-primary" type="submit">
                     <%= blog ? "Update Post" : "Create Post" %>
                 </button>
             </div>

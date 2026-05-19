@@ -13,9 +13,6 @@
         </div>
 
         <script 
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
-        </script>
-        <script 
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" 
             crossorigin="anonymous">
@@ -39,6 +36,31 @@
                     window.location.href = `/search?q=${encodeURIComponent(query)}`;
                 }, 800);
             });
+        </script>
+        <script>
+            const formFields = ["subject", "title", "imageURL", "text"];
+            const savedDraft = JSON.parse(localStorage.getItem("savedDraft")) || {};
+
+            formFields.forEach(field => {
+                const element = document.getElementById(field);
+                if (!element) return;
+
+                if (savedDraft[field]) {
+                    element.value = savedDraft[field];
+                }
+
+                element.addEventListener("input", () => {
+                    savedDraft[field] = element.value;
+                    localStorage.setItem("savedDraft", JSON.stringify(savedDraft));
+                })
+            });
+
+            const draftForm = document.getElementById("draftForm");
+            if (draftForm) {
+                draftForm.addEventListener("submit", () => {
+                    localStorage.removeItem("savedDraft");
+                });
+            }
         </script>
     </body>
 
