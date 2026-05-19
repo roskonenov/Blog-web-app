@@ -309,6 +309,28 @@ app.post("/edit-post/:id", requireAuth, (req, res) => {
     res.redirect(`/my-blogs/${blog.id}`);
 });
 
+app.post("/delete-post/:id", requireAuth, (req, res) => {
+    const blog = blogData.find(post => post.id === Number(req.params.id));
+    const authError = authorizeEditPost(blog, res.locals.username);
+
+    if (authError) {
+        res.cookie("flash", JSON.stringify(authError.flash));
+        return res.redirect(authError.redirectTo);
+    }
+
+    const index = blogData.findIndex(post => post.id === blog.id);
+    
+    if (index !== -1) {
+        blogData.splice(index, 1);
+    }
+
+    res.cookie("flash", JSON.stringify({
+        message: "Post deleted successfully!",
+        type: "success"
+    }));
+    res.redirect("/my-blogs/1");
+});
+
 app.listen(port, () => {
     console.log(`Server started on port ${port}.`);
 });
