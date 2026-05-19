@@ -282,7 +282,6 @@ app.post("/edit-post/:id", requireAuth, (req, res) => {
         return res.redirect(authError.redirectTo);
     }
 
-    
     const { errors, oldInput } = validatePostInput(req.body);
 
     if (Object.keys(errors).length > 0) {

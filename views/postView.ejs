@@ -2,22 +2,22 @@
 
     <main class="d-flex flex-nowrap">
         <% if (blogData.includes(selectedBlog)) { %>
-            
+
             <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary" style="width: 380px;">
                 <span class="fs-5 fw-semibold p-3 link-body-emphasis border-bottom">My Blogs</span>
 
                 <div class="list-group list-group-flush border-bottom scrollarea">
-                    <% blogData.forEach(blog => { %>
+                    <% blogData.forEach(blog=> { %>
 
-                        <a href="/my-blogs/<%= blog.id %>" class="list-group-item list-group-item-action <%= selectedBlog?.id === blog.id ? 'active' : '' %> py-3 lh-sm" aria-current="true">
+                        <a href="/my-blogs/<%= blog.id %>"
+                            class="list-group-item list-group-item-action <%= selectedBlog?.id === blog.id ? 'active' : '' %> py-3 lh-sm"
+                            aria-current="true">
                             <div class="d-flex w-100 align-items-center justify-content-between">
-                                <strong class="mb-1"> <%= truncateText(blog.title, 25) %> </strong>
-                                <small> 
-                                    <%= new Date(blog.date).toLocaleDateString("en-US", {
-                                                                day: "numeric",
-                                                                month: "long",
-                                                                year: "numeric"
-                                                            }) %> 
+                                <strong class="mb-1">
+                                    <%= truncateText(blog.title, 25) %>
+                                </strong>
+                                <small>
+                                    <%= new Date(blog.date).toLocaleDateString("en-US", { day: "numeric" , month: "long", year: "numeric" }) %>
                                 </small>
                             </div>
                             <div class="col-10 mb-1 small">
@@ -25,48 +25,94 @@
                             </div>
                         </a>
 
-                    <% }); %>
-                    
+                        <% }); %>
+
                 </div>
             </div>
 
-        <% } %>
+            <% } %>
 
-        <div class="col-sm-8 blog px-5 mt-5 mx-auto">
-            <h2> <%= selectedBlog.title %> </h2>
-            <div class="d-flex justify-content-between align-items-center">
-                <ul class="blog-detail list-unstyled list-inline">
-                    <li><i class="fa-solid fa-calendar me-1"></i>
-                    <%= new Date(selectedBlog.date).toLocaleDateString("en-US", {
-                                                                day: "numeric",
-                                                                month: "long",
-                                                                year: "numeric"
-                                                             }) %>
-                    </li>
-                    <li><i class="fa-solid fa-user me-1"></i> <%= selectedBlog.user %> </li>
-                </ul>
+                <div class="col-sm-8 blog px-5 mt-5 mx-auto">
+                    <h2>
+                        <%= selectedBlog.title %>
+                    </h2>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <ul class="blog-detail list-unstyled list-inline">
+                            <li><i class="fa-solid fa-calendar me-1"></i>
+                                <%= new Date(selectedBlog.date).toLocaleDateString("en-US", { day: "numeric" , month: "long" , year: "numeric" }) %>
+                            </li>
+                            <li><i class="fa-solid fa-user me-1"></i>
+                                <%= selectedBlog.user %>
+                            </li>
+                        </ul>
 
-                <% if (selectedBlog.user === username) { %>
-                    <div>
-                        <a href="/edit-post/<%= selectedBlog.id %>" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">
-                            Edit Post
-                        </a>
-                        <a href="/delete-post/<%= selectedBlog.id %>" class="btn btn-danger btn-lg px-4 me-md-2 fw-bold">
-                            Delete Post
-                        </a>
-                    </div>    
-                <% } %>
-                
-            </div>
-            <img 
-                class="img-responsive pull-left blog-image" 
-                src="<%= selectedBlog.imageURL.startsWith('http') ? selectedBlog.imageURL : '/' + selectedBlog.imageURL %>" 
-                alt="" 
-                height="300">
-            <p
-            style="white-space: pre-wrap"
-            > <%= selectedBlog.text %> </p>
-        </div>
+                        <% if (selectedBlog.user === username) { %>
+                            <div class="d-flex">
+
+                                <a href="/edit-post/<%= selectedBlog.id %>"
+                                    class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">
+                                    Edit Post
+                                </a>
+
+                                <form action="/delete-post/<%= selectedBlog.id %>" method="POST">
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                        class="btn btn-danger btn-lg px-4 me-md-2 fw-bold">
+                                        Delete Post
+                                    </button>
+                                </form>
+
+                            </div>
+
+                            <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+
+                                <div class="modal-dialog modal-dialog-centered">
+
+                                    <div class="modal-content">
+
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">
+                                                Delete Post
+                                            </h5>
+
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            Are you sure you want to delete
+                                            "<strong>
+                                                <%= selectedBlog.title %>
+                                            </strong>"?
+                                        </div>
+
+                                        <div class="modal-footer">
+
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Cancel
+                                            </button>
+
+                                            <form action="/delete-post/<%= selectedBlog.id %>" method="POST">
+                                                <button class="btn btn-danger">
+                                                    Delete
+                                                </button>
+                                            </form>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <% } %>
+
+                    </div>
+                    <img class="img-responsive pull-left blog-image"
+                        src="<%= selectedBlog.imageURL.startsWith('http') ? selectedBlog.imageURL : '/' + selectedBlog.imageURL %>"
+                        alt="" height="300">
+                    <p style="white-space: pre-wrap">
+                        <%= selectedBlog.text %>
+                    </p>
+                </div>
     </main>
 
     <%- include("partials/footer.ejs") %>
