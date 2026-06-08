@@ -1,0 +1,130 @@
+<%- include("partials/header.ejs") %>
+
+  <section class="h-100 gradient-custom-2">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center">
+        <div class="col col-lg-9 col-xl-8">
+          <div class="card">
+            <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height:200px;">
+              <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+                  alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
+                  style="width: 150px; z-index: 1">
+                <!-- <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-dark text-body" data-mdb-ripple-color="dark" style="z-index: 1;">
+                Edit profile
+              </button> -->
+              </div>
+              <div class="ms-3" style="margin-top: 130px;">
+                <h5>
+                  <%= username %>
+                </h5>
+                <p>New York</p>
+              </div>
+            </div>
+            <div class="p-4 text-black bg-body-tertiary">
+              <div class="d-flex justify-content-end text-center py-1 text-body">
+                <div>
+                  <p class="mb-1 h5">
+                    <%= blogCount %>
+                  </p>
+                  <p class="small text-muted mb-0">Blogs</p>
+                </div>
+                <div class="px-3">
+                  <p class="mb-1 h5">1026</p>
+                  <p class="small text-muted mb-0">Followers</p>
+                </div>
+                <div>
+                  <p class="mb-1 h5">478</p>
+                  <p class="small text-muted mb-0">Following</p>
+                </div>
+              </div>
+            </div>
+            <div class="card-body p-4 text-black">
+              <div class="mb-5  text-body">
+                <p class="lead fw-normal mb-1">About</p>
+                <div class="p-4 bg-body-tertiary">
+                  <p class="font-italic mb-1">Web Developer</p>
+                  <p class="font-italic mb-1">Lives in New York</p>
+                  <p class="font-italic mb-0">Photographer</p>
+                </div>
+              </div>
+             <% if (blogCount > 0) { %>
+
+                <div class="d-flex justify-content-between align-items-center mb-4 text-body">
+                    <p class="lead fw-normal mb-0">Recent blogs</p>
+                    <p class="mb-0"><a href="/my-blogs/1" class="text-muted">Show all</a></p>
+                </div> 
+
+             <% } else { %>
+
+                <div class="d-flex justify-content-center align-items-center mb-4 text-body">
+                    <p class="lead fw-normal mb-0">You don't have any blog posts yet!</p>
+                </div> 
+
+             <% } %>  
+              <div class="container">
+                <% blogData.forEach((blog, index)=> { %>
+
+                  <% if (index % 2===0) { %>
+                    <div class="row mb-2 g-3">
+                      <% } %>
+
+                        <div class="col-md-6">
+                          <div
+                            class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                            <div class="col p-4 d-flex flex-column position-static">
+                              <strong class="d-inline-block mb-2 text-primary-emphasis">
+
+                                <%= blog.subject %>
+
+                              </strong>
+                              <h3 class="mb-0">
+
+                                <% const truncatedTitle=truncateText(blog.title, 25); %>
+                                  <%- locals.query ? highlightedText(truncatedTitle, query) : truncatedTitle %>
+
+                              </h3>
+                              <div class="mb-1 text-body-secondary">
+
+                                <% const formattedDate=new Date(blog.date).toLocaleDateString('en-US', { month: 'short'
+                                  , day: 'numeric' }); %>
+
+                                  <%= formattedDate %>
+
+                              </div>
+                              <div class="mb-1 text-secondary-emphasis"> by <%= blog.user %>
+                              </div>
+                              <p class="card-text mb-auto">
+
+                                <% const truncatedText=truncateText(blog.text, 95); %>
+                                  <%- locals.query ? highlightedText(truncatedText, query) : truncatedText %>
+
+                              </p>
+                              <a href="/blog/<%= blog.id %>" class="icon-link gap-1 icon-link-hover stretched-link">
+                                Continue reading
+                                <svg class="bi" aria-hidden="true">
+                                  <use xlink:href="#chevron-right"></use>
+                                </svg>
+                              </a>
+                            </div>
+                            <div class="col-auto d-none d-lg-block">
+                              <img src="<%= blog.imageURL.startsWith('http') ? blog.imageURL : '/' + blog.imageURL %>"
+                                height="100" width="80" alt="">
+                            </div>
+                          </div>
+                        </div>
+
+                        <% if (index % 2===1) { %>
+                    </div>
+                    <% } %>
+                      <% });%>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+  </section>
+
+  <%- include("partials/footer.ejs") %>

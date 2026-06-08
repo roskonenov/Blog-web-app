@@ -302,10 +302,10 @@ app.post("/edit-post/:id", requireAuth, (req, res) => {
     blog.text = text;
 
     res.cookie("flash", JSON.stringify({
-            type: "success",
-            message: "Post updated successfully!"
-        }));
-    
+        type: "success",
+        message: "Post updated successfully!"
+    }));
+
     res.redirect(`/my-blogs/${blog.id}`);
 });
 
@@ -319,7 +319,7 @@ app.post("/delete-post/:id", requireAuth, (req, res) => {
     }
 
     const index = blogData.findIndex(post => post.id === blog.id);
-    
+
     if (index !== -1) {
         blogData.splice(index, 1);
     }
@@ -329,6 +329,19 @@ app.post("/delete-post/:id", requireAuth, (req, res) => {
         type: "success"
     }));
     res.redirect("/my-blogs/1");
+});
+
+app.get("/profile", requireAuth, (req, res) => {
+    const username = res.locals.username;
+    const myPosts = blogData.filter(blog => blog.user === username);
+    const lastPosts = myPosts.sort((a, b) => new Date(b.date) - new Date(a.date))
+        .slice(0, 2);
+
+    res.render("profile.ejs", {
+        blogCount: myPosts.length,
+        blogData: lastPosts,
+        truncateText
+    });
 });
 
 app.listen(port, () => {
