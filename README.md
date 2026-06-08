@@ -1,5 +1,7 @@
 ﻿# Blog Web App — Full Stack Capstone Project
 
+[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge)](https://blog-project-node-359483569081.europe-west4.run.app)
+
 This project is a full-stack blog web application built with modern Node.js technologies and designed to showcase real-world backend and frontend development skills. It demonstrates user authentication, CRUD operations for blog posts, search functionality, protected routes, and responsive UI styling.
 
 ## Features
