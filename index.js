@@ -10,8 +10,8 @@ import validatePostInput from "./utils/validatePostInput.js";
 import authorizeEditPost from "./utils/authorizeEditPost.js";
 
 const app = express();
-const port = 3000;
-const SECRET = "mySecretKey";
+const port = process.env.PORT || 3000;
+const SECRET = process.env.SECRET || "mySecretKey";
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
