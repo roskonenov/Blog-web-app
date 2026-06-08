@@ -55,41 +55,6 @@ npm start
 http://localhost:3000
 ```
 
-## Deployment to Google Cloud Platform
-
-This project can be deployed to Google App Engine Standard.
-
-1. Install the Google Cloud CLI: https://cloud.google.com/sdk/docs/install
-2. Authenticate and choose your project:
-
-```bash
-gcloud auth login
-gcloud config set project YOUR_PROJECT_ID
-```
-
-3. Create an App Engine application if needed:
-
-```bash
-gcloud app create --region=YOUR_REGION
-```
-
-4. Deploy the app:
-
-```bash
-gcloud app deploy app.yaml
-```
-
-5. Open the deployed app:
-
-```bash
-gcloud app browse
-```
-
-Important notes:
-- `app.yaml` is included and configures App Engine to use Node.js 18.
-- `SECRET` is loaded from `process.env.SECRET` in `index.js`; update `app.yaml` before deployment.
-- Use a secure secret for production and avoid checking sensitive values into source control.
-
 ## Usage
 
 - Visit `/register` to create a new account, or `/login` to sign in.
